@@ -1,6 +1,6 @@
 # CCPD: Chinese City Parking Dataset
 
-##forked from https://github.com/detectRecog/CCPD
+## forked from https://github.com/detectRecog/CCPD
 
 ## UPdate on 10/03/2019. CCPD2019 is now publicly available, is much more challenging with over 300k images and all annotations are refined. (If you are benefited from this dataset, please cite our paper.) It can be downloaded from:
  - [Google Drive the first part](https://drive.google.com/open?id=1AX2U3K9V-UpB8TjiVH8pL3tetyPt3f0p) , [Google Drive the second part](https://drive.google.com/open?id=1Zg3MtIvDoi83B2bkT0hionMxPNceHUpV) 
