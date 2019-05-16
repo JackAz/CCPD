@@ -37,9 +37,10 @@ Demo code and several images are provided under rpnet/ folder, after you obtain 
 ```
 
   python video_detect.py -m [***/fh02.pth]
+  
   python image_detect.py -i [ROOT/demo/rs1.jpg] -m [***/fh02.pth]
   
-
+  
 ```
 
 ## Training instructions
