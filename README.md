@@ -30,24 +30,15 @@ This repository is designed to provide an open-source dataset for license plate 
 - Location module wR2.pth [google_drive](https://drive.google.com/open?id=1l_tIt7D3vmYNYZLOPbwx8qJpPVM82CP-), [baiduyun](https://pan.baidu.com/s/1Q3fPDHFYV5uibWwIQxPEOw)
 - rpnet model fh02.pth [google_drive](https://drive.google.com/open?id=1YYVWgbHksj25vV6bnCX_AWokFjhgIMhv), [baiduyun](https://pan.baidu.com/s/1sA-rzn4Mf33uhh1DWNcRhQ).
 
-
-
-## Specification of the categorise above:
-
-- **sample**: gives 6 example pictures for each sub-dataset(blur/challenge/db/fn/np/rotate/tilt).
-
-- **rpnet**: The training code for a license plate localization network and an end-to-end network which can detect the license plate bounding box and recognize the corresponding license plate number in a single forward. In addition, demo.py and demo folder are provided for playing demo.
-
-- **paper.pdf**: Our published eccv paper.
-
-
-## Demo
+## image_detect.py and video_detect.py
 
 Demo code and several images are provided under rpnet/ folder, after you obtain "fh02.pth" by downloading or training, run demo as follows, the demo code will modify images in rpnet/demo folder and you can check by opening demo images.
 
 ```
 
-  python demo.py -i [ROOT/rpnet/demo/] -m [***/fh02.pth]
+  python video_detect.py -m [***/fh02.pth]
+  python image_detect.py -i [ROOT/demo/rs1.jpg] -m [***/fh02.pth]
+  
 
 ```
 
