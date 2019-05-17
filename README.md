@@ -1,11 +1,37 @@
-# CCPD: Chinese City Parking Dataset(I forked it from https://github.com/detectRecog/CCPD)
+# CCPD: Chinese City Parking Dataset
 
-## UPdate on 10/03/2019. CCPD2019 is now publicly available, is much more challenging with over 300k images and all annotations are refined. (If you are benefited from this dataset, please cite our paper.) It can be downloaded from:
+## forked from https://github.com/detectRecog/CCPD
+
+日常搬砖，端到端的车牌检测项目，RPnet训练自CCPD数据集（图片数超过30万），代码根据自己需求做了些修改：
+
+```
+
+  python image_detect.py -i [demo/rs1.jpg] -m [***/fh02.pth]
+    
+  python video_detect.py -m [***/fh02.pth]  
+  
+  python train_Bbox.py -i [***/ccpd/train]
+  
+  python train_rpnet.py -i [***/ccpd/train] -b 5 -se 0 -f [***/ccpd/rpnet] -t [***/ccpd/dev]
+  
+  python Eval.py -m [***/fh02.pth] -i [***/ccpd/test] -s [***/ccpd/failure_save]
+  
+```
+
+CCPD的图片分辨率是720*1160，如果检测不同尺寸的图片，检测效果是不理想的。感觉一方面是进入cnn前先手动做了resize，另一方面可能训练的图片是这个尺寸，训练出来可能还是只能看这个尺寸吧，菜鸡的分析。所以在落地应用的时候，打算改一下网络结构，加个自适应池化，这样后面连FC层也无压力了。重新训练一下，emmm，过拟合了调参好麻烦，就放弃了。
+
+曲线救国，首先可以规定输入的尺寸，比如我摄像头输入就是1920*1280的，但是opencv的设置好像还有点问题。然后对输入图片做切割，循环取 ` img_data[580*j:580*j+1160, 360*i:360*i+720]`
+多个检测结果综合一下，这部分代码在image_detect.py中，还在完善。
+
+数据集制作很辛苦，感谢大佬的开源！美中不足是安徽车居多，很多时候检测出来都是皖。
+
+## CCPD2019 is now publicly available, is much more challenging with over 300k images and all annotations are refined. (If you are benefited from this dataset, please cite our paper.) It can be downloaded from:
  - [Google Drive the first part](https://drive.google.com/open?id=1AX2U3K9V-UpB8TjiVH8pL3tetyPt3f0p) , [Google Drive the second part](https://drive.google.com/open?id=1Zg3MtIvDoi83B2bkT0hionMxPNceHUpV) 
  
  - [BaiduYun Drive](https://pan.baidu.com/s/1z1HWBe671Gn2ZAOApf9huA)
 
-This repository is designed to provide an open-source dataset for license plate detection and recognition, described in _《Towards End-to-End License Plate Detection and Recognition: A Large Dataset and Baseline》_. This dataset is open-source under MIT license. More details about this dataset are avialable at our ECCV 2018 paper (also available in this github) _《Towards End-to-End License Plate Detection and Recognition: A Large Dataset and Baseline》_. If you are benefited from this paper, please cite our paper as follows:
+This repository is designed to provide an open-source dataset for license plate detection and 
+recognition, described in _《Towards End-to-End License Plate Detection and Recognition: A Large Dataset and Baseline》_. This dataset is open-source under MIT license. More details about this dataset are avialable at our ECCV 2018 paper (also available in this github) _《Towards End-to-End License Plate Detection and Recognition: A Large Dataset and Baseline》_. If you are benefited from this paper, please cite our paper as follows:
 
 ```
 @inproceedings{xu2018towards,
@@ -29,26 +55,6 @@ This repository is designed to provide an open-source dataset for license plate 
 - rpnet model fh02.pth [google_drive](https://drive.google.com/open?id=1YYVWgbHksj25vV6bnCX_AWokFjhgIMhv), [baiduyun](https://pan.baidu.com/s/1sA-rzn4Mf33uhh1DWNcRhQ).
 
 
-
-## Specification of the categorise above:
-
-- **sample**: gives 6 example pictures for each sub-dataset(blur/challenge/db/fn/np/rotate/tilt).
-
-- **rpnet**: The training code for a license plate localization network and an end-to-end network which can detect the license plate bounding box and recognize the corresponding license plate number in a single forward. In addition, demo.py and demo folder are provided for playing demo.
-
-- **paper.pdf**: Our published eccv paper.
-
-
-## Demo
-
-Demo code and several images are provided under rpnet/ folder, after you obtain "fh02.pth" by downloading or training, run demo as follows, the demo code will modify images in rpnet/demo folder and you can check by opening demo images.
-
-```
-
-  python demo.py -i [ROOT/rpnet/demo/] -m [***/fh02.pth]
-
-```
-
 ## Training instructions
 
 Input parameters are well commented in python codes(python2/3 are both ok, the version of pytorch should be >= 0.3). You can increase the batchSize as long as enough GPU memory is available.
@@ -60,35 +66,10 @@ Input parameters are well commented in python codes(python2/3 are both ok, the v
 
 #### For convinence, we provide a trained wR2 model and a trained rpnet model, you can download them from google drive or baiduyun.
 
+First train the localization network (we provide one as before, you can download it from [google drive](https://drive.google.com/open?id=1l_tIt7D3vmYNYZLOPbwx8qJpPVM82CP-) or [baiduyun](https://pan.baidu.com/s/1Q3fPDHFYV5uibWwIQxPEOw)) 
 
+After wR2 finetunes, we train the RPnet (we provide one as before, you can download it from [google drive](https://drive.google.com/open?id=1YYVWgbHksj25vV6bnCX_AWokFjhgIMhv) or [baiduyun](https://pan.baidu.com/s/1sA-rzn4Mf33uhh1DWNcRhQ)) Please specify the variable wR2Path (the path of the well-trained wR2 model) in rpnet.py.
 
-First train the localization network (we provide one as before, you can download it from [google drive](https://drive.google.com/open?id=1l_tIt7D3vmYNYZLOPbwx8qJpPVM82CP-) or [baiduyun](https://pan.baidu.com/s/1Q3fPDHFYV5uibWwIQxPEOw)) defined in wR2.py as follows:
-
-```
-
-  python wR2.py -i [IMG FOLDERS] -b 4
-
-```
-
-After wR2 finetunes, we train the RPnet (we provide one as before, you can download it from [google drive](https://drive.google.com/open?id=1YYVWgbHksj25vV6bnCX_AWokFjhgIMhv) or [baiduyun](https://pan.baidu.com/s/1sA-rzn4Mf33uhh1DWNcRhQ)) defined in rpnet.py. Please specify the variable wR2Path (the path of the well-trained wR2 model) in rpnet.py.
-
-```
-
-  python rpnet.py -i [TRAIN IMG FOLDERS] -b 4 -se 0 -f [MODEL SAVE FOLDER] -t [TEST IMG FOLDERS]
-
-```
-
-
-
-## Test instructions
-
-After fine-tuning RPnet, you need to uncompress a zip folder and select it as the test directory. The argument after -s is a folder for storing failure cases. 
-
-```
-
-  python rpnetEval.py -m [MODEL PATH, like /**/fh02.pth] -i [TEST DIR] -s [FAILURE SAVE DIR]
-
-```
 
 ## Dataset Annotations
 
@@ -126,3 +107,5 @@ If you have any problems about CCPD, please contact detectrecog@gmail.com.
 
 
 Please cite the paper _《Towards End-to-End License Plate Detection and Recognition: A Large Dataset and Baseline》_, if you benefit from this dataset.
+
+我只是搬砖（手动滑稽）

@@ -1,4 +1,3 @@
-
 provNum, alphaNum, adNum = 38, 25, 35
 numClasses = 7
 numPoints = 4
