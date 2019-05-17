@@ -2,7 +2,7 @@
 
 ## forked from https://github.com/detectRecog/CCPD
 
-日常搬砖，端到端的车牌检测项目，RPnet训练自CCPD数据集（图片数超过30万），代码根据自己需求做了些修改：
+日常搬砖，端到端的车牌检测项目，RPnet训练自CCPD数据集（图片数超过30万），Win10正常运行，代码根据自己需求做了些修改：
 
 ```
 
